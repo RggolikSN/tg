@@ -16,6 +16,7 @@
         }
 
         :root {
+            /* Темная тема (по умолчанию) */
             --tg-theme-bg-color: #0f0f23;
             --tg-theme-text-color: #ffffff;
             --tg-theme-button-color: #8a2be2;
@@ -25,6 +26,51 @@
             --card-hover: rgba(255, 255, 255, 0.12);
             --border-radius: 20px;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --accent-color: #8a2be2;
+            --success-color: #00ff88;
+            --danger-color: #ff6b6b;
+        }
+
+        [data-theme="light"] {
+            --tg-theme-bg-color: #f8fafc;
+            --tg-theme-text-color: #1e293b;
+            --tg-theme-button-color: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --secondary-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-hover: rgba(255, 255, 255, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --accent-color: #6366f1;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+
+        [data-theme="neon"] {
+            --tg-theme-bg-color: #0a0a0a;
+            --tg-theme-text-color: #00ffea;
+            --tg-theme-button-color: #ff00ff;
+            --primary-gradient: linear-gradient(135deg, #00ffea 0%, #ff00ff 100%);
+            --secondary-gradient: linear-gradient(135deg, #ff0080 0%, #ff8c00 100%);
+            --card-bg: rgba(0, 255, 234, 0.05);
+            --card-hover: rgba(0, 255, 234, 0.1);
+            --shadow: 0 10px 30px rgba(0, 255, 234, 0.2);
+            --accent-color: #ff00ff;
+            --success-color: #00ff88;
+            --danger-color: #ff0066;
+        }
+
+        [data-theme="matrix"] {
+            --tg-theme-bg-color: #001100;
+            --tg-theme-text-color: #00ff41;
+            --tg-theme-button-color: #00ff41;
+            --primary-gradient: linear-gradient(135deg, #00ff41 0%, #008f11 100%);
+            --secondary-gradient: linear-gradient(135deg, #003b00 0%, #00ff41 100%);
+            --card-bg: rgba(0, 255, 65, 0.05);
+            --card-hover: rgba(0, 255, 65, 0.1);
+            --shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+            --accent-color: #00ff41;
+            --success-color: #00ff41;
+            --danger-color: #ff0033;
         }
 
         body {
@@ -34,16 +80,87 @@
             min-height: 100vh;
             overflow-x: hidden;
             padding: 0;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(102, 126, 234, 0.15) 0%, transparent 40%);
-            touch-action: pan-y;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        /* Анимированный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Частицы для фона */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: currentColor;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        /* Волны для фона */
+        .waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100px;
+            background: currentColor;
+            opacity: 0.1;
+            animation: wave 15s infinite linear;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            opacity: 0.05;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: -10s;
+            opacity: 0.07;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0) translateZ(0) scaleY(1); }
+            50% { transform: translateX(-25%) translateZ(0) scaleY(0.8); }
+            100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, 20px) rotate(90deg); }
+            50% { transform: translate(0, 40px) rotate(180deg); }
+            75% { transform: translate(-20px, 20px) rotate(270deg); }
         }
 
         .container {
             max-width: 100%;
             padding: 16px;
             animation: containerSlide 0.6s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes containerSlide {
@@ -77,13 +194,21 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 3px 10px rgba(102, 126, 234, 0.3));
+            animation: logoPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.05) rotate(2deg); }
+            50% { transform: scale(1) rotate(0deg); }
+            75% { transform: scale(1.05) rotate(-2deg); }
         }
 
         .title {
             font-size: 1.6rem;
             font-weight: 800;
             margin-bottom: 4px;
-            background: linear-gradient(135deg, #fff 0%, #a78bfa 100%);
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -104,11 +229,31 @@
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            color: white;
+            color: inherit;
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             margin-left: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .settings-btn:active::before {
+            width: 100%;
+            height: 100%;
         }
 
         .settings-btn:hover {
@@ -129,6 +274,22 @@
             z-index: 1000;
             display: none;
             animation: menuSlide 0.3s ease-out;
+            min-width: 150px;
+        }
+
+        [data-theme="light"] .settings-menu {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="neon"] .settings-menu {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(0, 255, 234, 0.3);
+        }
+
+        [data-theme="matrix"] .settings-menu {
+            background: rgba(0, 17, 0, 0.9);
+            border: 1px solid rgba(0, 255, 65, 0.3);
         }
 
         @keyframes menuSlide {
@@ -146,23 +307,70 @@
             display: block;
         }
 
-        .currency-option {
-            padding: 12px 16px;
+        .menu-section {
+            margin-bottom: 12px;
+        }
+
+        .menu-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .menu-section-title {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .theme-option, .currency-option {
+            padding: 10px 12px;
             border-radius: 12px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 4px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .currency-option:hover {
+        .theme-option::before, .currency-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+            transition: left 0.3s ease;
+        }
+
+        .theme-option:hover::before, .currency-option:hover::before {
+            left: 0;
+        }
+
+        .theme-option:hover, .currency-option:hover {
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .currency-option.active {
+        .theme-option.active, .currency-option.active {
             background: var(--tg-theme-button-color);
         }
+
+        .theme-preview {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+        }
+
+        .theme-preview.dark { background: #0f0f23; }
+        .theme-preview.light { background: #f8fafc; }
+        .theme-preview.neon { background: #0a0a0a; border-color: #00ffea; }
+        .theme-preview.matrix { background: #001100; border-color: #00ff41; }
 
         .tabs {
             display: flex;
@@ -172,6 +380,13 @@
             margin-bottom: 24px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .tabs {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         .tab {
@@ -188,6 +403,7 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
+            z-index: 1;
         }
 
         .tab::before {
@@ -235,6 +451,18 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            animation: cardAppear 0.5s ease-out;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .card::before {
@@ -272,6 +500,26 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crypto-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .crypto-item:active::before {
+            width: 100%;
+            height: 100%;
         }
 
         .crypto-item:active {
@@ -303,6 +551,24 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
             transition: all 0.3s ease;
             flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crypto-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: transform 0.6s;
+        }
+
+        .crypto-item:hover .crypto-icon::after {
+            transform: rotate(45deg) translate(50%, 50%);
         }
 
         .crypto-item:active .crypto-icon {
@@ -350,11 +616,11 @@
         }
 
         .price-up {
-            color: #00ff88;
+            color: var(--success-color);
         }
 
         .price-down {
-            color: #ff6b6b;
+            color: var(--danger-color);
         }
 
         .chart-container {
@@ -382,7 +648,7 @@
         .back-button {
             background: rgba(255, 255, 255, 0.1);
             border: none;
-            color: white;
+            color: inherit;
             padding: 10px 16px;
             border-radius: 12px;
             cursor: pointer;
@@ -392,6 +658,26 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .back-button:active::before {
+            width: 100%;
+            height: 100%;
         }
 
         .back-button:active {
@@ -441,6 +727,21 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
+        }
+
+        .refresh-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .refresh-btn:hover::before {
+            left: 100%;
         }
 
         .refresh-btn:active {
@@ -500,6 +801,26 @@
             border-radius: 14px;
             text-align: center;
             transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .stat-item:active::before {
+            width: 100%;
+            height: 100%;
         }
 
         .stat-item:active {
@@ -529,7 +850,7 @@
             padding: 10px 16px;
             border: none;
             background: rgba(255, 255, 255, 0.1);
-            color: white;
+            color: inherit;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -538,6 +859,26 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .period-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .period-btn:active::before {
+            width: 100%;
+            height: 100%;
         }
 
         .period-btn:active {
@@ -632,10 +973,25 @@
             white-space: nowrap;
             border: 0;
         }
+
+        /* Анимация переключения тем */
+        .theme-transition {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
     </style>
 </head>
-<body>
-    <div class="container">
+<body data-theme="dark">
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="particles" id="particles"></div>
+        <div class="waves">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+    </div>
+
+    <div class="container theme-transition">
         <div class="app-header">
             <div class="header-content">
                 <div class="logo">🚀</div>
@@ -644,20 +1000,39 @@
             </div>
             <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
             <div class="settings-menu" id="settingsMenu">
-                <div class="currency-option active" onclick="changeCurrency('usd')">
-                    <span>🇺🇸 USD</span>
+                <div class="menu-section">
+                    <div class="menu-section-title">Тема</div>
+                    <div class="theme-option active" onclick="changeTheme('dark')">
+                        <div class="theme-preview dark"></div>
+                        <span>Темная</span>
+                    </div>
+                    <div class="theme-option" onclick="changeTheme('light')">
+                        <div class="theme-preview light"></div>
+                        <span>Светлая</span>
+                    </div>
+                    <div class="theme-option" onclick="changeTheme('neon')">
+                        <div class="theme-preview neon"></div>
+                        <span>Неон</span>
+                    </div>
+                    <div class="theme-option" onclick="changeTheme('matrix')">
+                        <div class="theme-preview matrix"></div>
+                        <span>Матрица</span>
+                    </div>
                 </div>
-                <div class="currency-option" onclick="changeCurrency('eur')">
-                    <span>🇪🇺 EUR</span>
-                </div>
-                <div class="currency-option" onclick="changeCurrency('rub')">
-                    <span>🇷🇺 RUB</span>
-                </div>
-                <div class="currency-option" onclick="changeCurrency('btc')">
-                    <span>₿ BTC</span>
-                </div>
-                <div class="currency-option" onclick="changeCurrency('eth')">
-                    <span>Ξ ETH</span>
+                <div class="menu-section">
+                    <div class="menu-section-title">Валюта</div>
+                    <div class="currency-option active" onclick="changeCurrency('usd')">
+                        <span>🇺🇸 USD</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('eur')">
+                        <span>🇪🇺 EUR</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('rub')">
+                        <span>🇷🇺 RUB</span>
+                    </div>
+                    <div class="currency-option" onclick="changeCurrency('btc')">
+                        <span>₿ BTC</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -721,23 +1096,23 @@
         <div id="info" class="content">
             <div class="card pulse">
                 <h3>🎯 О Платформе</h3>
-                <p>Продвинутый криптотрекинг с красивыми анимациями и адаптивным дизайном для мобильных устройств.</p>
+                <p>Продвинутый криптотрекинг с красивыми анимациями, темами и адаптивным дизайном.</p>
             </div>
             
             <div class="card">
-                <h3>📊 Технологии</h3>
-                <p>• CoinGecko API - реальные данные</p>
-                <p>• Chart.js + Anime.js - анимации</p>
-                <p>• Адаптивный дизайн</p>
-                <p>• Мульти-валюта</p>
+                <h3>🎨 Темы</h3>
+                <p>• Темная (по умолчанию)</p>
+                <p>• Светлая</p>
+                <p>• Неоновая</p>
+                <p>• Матрица</p>
             </div>
 
             <div class="card">
                 <h3>⚡ Особенности</h3>
+                <p>• Анимированный фон с частицами</p>
+                <p>• Плавные переходы между темами</p>
+                <p>• Улучшенные анимации нажатия</p>
                 <p>• Поддержка мобильных устройств</p>
-                <p>• Плавные анимации</p>
-                <p>• Несколько валют</p>
-                <p>• Автообновление</p>
             </div>
         </div>
 
@@ -760,13 +1135,58 @@
         let currentPeriod = 1;
         let currentCryptoId = null;
         let currentCurrency = 'usd';
+        let currentTheme = 'dark';
         let settingsOpen = false;
 
-        // Настройки валюты
+        // Создание частиц для фона
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Случайные параметры
+                const size = Math.random() * 4 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 10 + 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Настройки валюты и темы
         function toggleSettings() {
             const menu = document.getElementById('settingsMenu');
             settingsOpen = !settingsOpen;
             menu.classList.toggle('active', settingsOpen);
+        }
+
+        function changeTheme(theme) {
+            currentTheme = theme;
+            document.body.setAttribute('data-theme', theme);
+            
+            // Обновляем активную тему в меню
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            event.target.closest('.theme-option').classList.add('active');
+            
+            // Сохраняем тему в localStorage
+            localStorage.setItem('cryptoTheme', theme);
+            
+            // Обновляем цвет Telegram Web App
+            updateTelegramTheme();
         }
 
         function changeCurrency(currency) {
@@ -784,6 +1204,37 @@
             
             // Перезагружаем данные
             loadData();
+        }
+
+        function updateTelegramTheme() {
+            const themes = {
+                'dark': { bg: '#0f0f23', header: '#8a2be2' },
+                'light': { bg: '#f8fafc', header: '#6366f1' },
+                'neon': { bg: '#0a0a0a', header: '#ff00ff' },
+                'matrix': { bg: '#001100', header: '#00ff41' }
+            };
+            
+            const theme = themes[currentTheme];
+            tg.setHeaderColor(theme.header);
+            tg.setBackgroundColor(theme.bg);
+        }
+
+        // Загрузка сохраненных настроек
+        function loadSettings() {
+            const savedTheme = localStorage.getItem('cryptoTheme');
+            if (savedTheme) {
+                currentTheme = savedTheme;
+                document.body.setAttribute('data-theme', currentTheme);
+                updateTelegramTheme();
+                
+                // Обновляем активную тему в меню
+                document.querySelectorAll('.theme-option').forEach(option => {
+                    option.classList.remove('active');
+                    if (option.getAttribute('onclick').includes(`'${currentTheme}'`)) {
+                        option.classList.add('active');
+                    }
+                });
+            }
         }
 
         // Закрытие меню при клике вне его
@@ -1031,8 +1482,9 @@
                 const firstPrice = prices[0];
                 const lastPrice = prices[prices.length - 1];
                 const isPositive = lastPrice >= firstPrice;
-                const chartColor = isPositive ? '#00ff88' : '#ff6b6b';
-                const bgColor = isPositive ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 107, 107, 0.1)';
+                const chartColor = isPositive ? 'var(--success-color)' : 'var(--danger-color)';
+                const bgColor = isPositive ? 
+                    'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)';
 
                 currentChart = new Chart(ctx, {
                     type: 'line',
@@ -1175,8 +1627,14 @@
         // Автоматическое обновление каждые 60 секунд
         setInterval(loadData, 60000);
 
-        // Загрузка данных при старте
+        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
+            // Создаем частицы для фона
+            createParticles();
+            
+            // Загружаем сохраненные настройки
+            loadSettings();
+            
             // Загружаем данные сразу
             loadData();
             
